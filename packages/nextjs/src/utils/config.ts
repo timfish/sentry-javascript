@@ -41,6 +41,8 @@ const injectSentry = async (origEntryProperty: EntryProperty, isServer: boolean)
 
   let newEntryProperty = origEntryProperty;
 
+  console.log(origEntryProperty);
+
   if (typeof origEntryProperty === 'function') {
     newEntryProperty = await origEntryProperty();
   }
@@ -50,6 +52,7 @@ const injectSentry = async (origEntryProperty: EntryProperty, isServer: boolean)
   // according to vercel, we only need to inject Sentry in one spot for server and one spot for client, and because
   // those are used as bases, it will apply everywhere
   const injectionPoint = isServer ? 'pages/_document' : 'main';
+  console.log('injectionPoint:', injectionPoint);
   const injectee = isServer ? './sentry.server.config.js' : './sentry.client.config.js';
 
   // can be a string, array of strings, or object whose `import` property is one of those two
