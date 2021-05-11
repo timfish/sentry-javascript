@@ -3,6 +3,9 @@ import { DebugMeta, Event, SentryRequest, TransactionSamplingMethod } from '@sen
 import { API } from '../../src/api';
 import { eventToSentryRequest } from '../../src/request';
 
+const ingestDsn = 'https://dogsarebadatkeepingsecrets@squirrelchasers.ingest.sentry.io/12312012';
+const envelopeTunnel = 'https://hello.com/world';
+
 describe('eventToSentryRequest', () => {
   function parseEnvelopeRequest(request: SentryRequest): any {
     const [envelopeHeaderString, itemHeaderString, eventString] = request.body.split('\n');
@@ -14,17 +17,19 @@ describe('eventToSentryRequest', () => {
     };
   }
 
-  const api = new API('https://dogsarebadatkeepingsecrets@squirrelchasers.ingest.sentry.io/12312012', {
-    sdk: {
-      integrations: ['AWSLambda'],
-      name: 'sentry.javascript.browser',
-      version: `12.31.12`,
-      packages: [{ name: 'npm:@sentry/browser', version: `12.31.12` }],
-    },
-  });
+  let api: API;
   let event: Event;
 
   beforeEach(() => {
+    api = new API(ingestDsn, {
+      sdk: {
+        integrations: ['AWSLambda'],
+        name: 'sentry.javascript.browser',
+        version: `12.31.12`,
+        packages: [{ name: 'npm:@sentry/browser', version: `12.31.12` }],
+      },
+    });
+
     event = {
       contexts: { trace: { trace_id: '1231201211212012', span_id: '12261980', op: 'pageload' } },
       environment: 'dogpark',
@@ -37,7 +42,7 @@ describe('eventToSentryRequest', () => {
     };
   });
 
-  it(`adds transaction sampling information to item header`, () => {
+  it('adds transaction sampling information to item header', () => {
     event.debug_meta = { transactionSampling: { method: TransactionSamplingMethod.Rate, rate: 0.1121 } };
 
     const result = eventToSentryRequest(event, api);
@@ -121,6 +126,27 @@ describe('eventToSentryRequest', () => {
           ],
           version: '1337',
         },
+      }),
+    );
+  });
+
+  it('uses envelopeTunnel as the url if it is configured', () => {
+    api = new API(ingestDsn, {}, envelopeTunnel);
+
+    const result = eventToSentryRequest(event, api);
+
+    expect(result.url).toEqual(envelopeTunnel);
+  });
+
+  it('adds dsn to envelope header if envelopeTunnel is configured', () => {
+    api = new API(ingestDsn, {}, envelopeTunnel);
+
+    const result = eventToSentryRequest(event, api);
+    const envelope = parseEnvelopeRequest(result);
+
+    expect(envelope.envelopeHeader).toEqual(
+      expect.objectContaining({
+        dsn: ingestDsn,
       }),
     );
   });
