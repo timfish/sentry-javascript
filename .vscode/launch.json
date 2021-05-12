@@ -100,5 +100,20 @@
       "console": "integratedTerminal", // otherwise it goes to the VSCode debug terminal, which can't read from stdin
       "internalConsoleOptions": "neverOpen", // since we're not using it, don't automatically switch to it
     },
+    {
+      "type": "pwa-node",
+      "name": "Debug TS script - open file",
+      "program": "${file}",
+      "request": "launch",
+      // "restart": true,
+      "runtimeExecutable": "ts-node",
+      "cwd": "${fileDirname}",
+      "sourceMaps": true,
+      "skipFiles": [
+        "<node_internals>/**", "**/tslib/**", "**/ts-node/**"
+      ],
+      // "console": "integratedTerminal",
+      // "internalConsoleOptions": "neverOpen"
+    },
   ]
 }
