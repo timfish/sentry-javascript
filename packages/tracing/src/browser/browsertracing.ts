@@ -1,11 +1,14 @@
 /* eslint-disable max-lines */
-import { Hub } from '@sentry/core';
+import {
+  DEFAULT_FINAL_TIMEOUT,
+  DEFAULT_IDLE_TIMEOUT,
+  extractTraceparentData,
+  Hub,
+  startIdleTransaction,
+} from '@sentry/core';
 import { EventProcessor, Integration, Transaction, TransactionContext } from '@sentry/types';
 import { baggageHeaderToDynamicSamplingContext, getDomElement, getGlobalObject, logger } from '@sentry/utils';
 
-import { startIdleTransaction } from '../hubextensions';
-import { DEFAULT_FINAL_TIMEOUT, DEFAULT_IDLE_TIMEOUT } from '../idletransaction';
-import { extractTraceparentData } from '../utils';
 import { registerBackgroundTabDetection } from './backgroundtab';
 import { addPerformanceEntries, startTrackingLongTasks, startTrackingWebVitals } from './metrics';
 import {

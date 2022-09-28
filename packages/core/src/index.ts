@@ -30,4 +30,6 @@ export { FunctionToString, InboundFilters } from './integrations';
 
 import * as Integrations from './integrations';
 
+export * from './tracing';
+
 export { Integrations };

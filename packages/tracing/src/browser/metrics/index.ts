@@ -1,10 +1,8 @@
 /* eslint-disable max-lines */
+import { getActiveTransaction, IdleTransaction, msToSec, Transaction } from '@sentry/core';
 import { Measurements } from '@sentry/types';
 import { browserPerformanceTimeOrigin, getGlobalObject, htmlTreeAsString, logger } from '@sentry/utils';
 
-import { IdleTransaction } from '../../idletransaction';
-import { Transaction } from '../../transaction';
-import { getActiveTransaction, msToSec } from '../../utils';
 import { getCLS, LayoutShift } from '../web-vitals/getCLS';
 import { getFID } from '../web-vitals/getFID';
 import { getLCP, LargestContentfulPaint } from '../web-vitals/getLCP';

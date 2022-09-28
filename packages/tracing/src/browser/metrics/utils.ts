@@ -1,6 +1,5 @@
+import { Transaction } from '@sentry/core';
 import { Span, SpanContext } from '@sentry/types';
-
-import { Transaction } from '../../transaction';
 
 /**
  * Checks if a given value is a valid measurement value.

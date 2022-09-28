@@ -1,4 +1,3 @@
-import { getCurrentHub, Hub } from '@sentry/core';
 import {
   DynamicSamplingContext,
   Event,
@@ -10,6 +9,7 @@ import {
 } from '@sentry/types';
 import { dropUndefinedKeys, logger, timestampInSeconds } from '@sentry/utils';
 
+import { getCurrentHub, Hub } from '..';
 import { Span as SpanClass, SpanRecorder } from './span';
 
 /** JSDoc */

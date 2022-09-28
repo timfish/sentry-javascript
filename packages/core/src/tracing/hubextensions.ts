@@ -1,4 +1,3 @@
-import { getMainCarrier, Hub } from '@sentry/core';
 import {
   ClientOptions,
   CustomSamplingContext,
@@ -10,6 +9,7 @@ import {
 } from '@sentry/types';
 import { dynamicRequire, isNaN, isNodeEnv, loadModule, logger } from '@sentry/utils';
 
+import { getMainCarrier, Hub } from '..';
 import { registerErrorInstrumentation } from './errors';
 import { IdleTransaction } from './idletransaction';
 import { Transaction } from './transaction';

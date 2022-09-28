@@ -1,4 +1,5 @@
 /* eslint-disable max-lines */
+import { getActiveTransaction, hasTracingEnabled } from '@sentry/core';
 import type { DynamicSamplingContext, Span } from '@sentry/types';
 import {
   addInstrumentationHandler,
@@ -7,8 +8,6 @@ import {
   isInstanceOf,
   isMatchingPattern,
 } from '@sentry/utils';
-
-import { getActiveTransaction, hasTracingEnabled } from '../utils';
 
 export const DEFAULT_TRACING_ORIGINS = ['localhost', /^\//];
 

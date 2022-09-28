@@ -53,12 +53,12 @@ export {
 export { SDK_VERSION } from '@sentry/browser';
 
 import { Integrations as BrowserIntegrations } from '@sentry/browser';
+import { addExtensionMethods } from '@sentry/core';
 import { getGlobalObject } from '@sentry/utils';
 
 import { BrowserTracing } from './browser';
-import { addExtensionMethods } from './hubextensions';
 
-export { Span } from './span';
+export { Span } from '@sentry/core';
 
 let windowIntegrations = {};
 

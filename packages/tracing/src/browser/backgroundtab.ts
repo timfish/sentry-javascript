@@ -1,8 +1,5 @@
+import { getActiveTransaction, IdleTransaction, SpanStatusType } from '@sentry/core';
 import { getGlobalObject, logger } from '@sentry/utils';
-
-import { IdleTransaction } from '../idletransaction';
-import { SpanStatusType } from '../span';
-import { getActiveTransaction } from '../utils';
 
 const global = getGlobalObject<Window>();
 
