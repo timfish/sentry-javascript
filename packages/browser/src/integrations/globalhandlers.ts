@@ -5,7 +5,6 @@ import {
   addExceptionMechanism,
   addInstrumentationHandler,
   getLocationHref,
-  isErrorEvent,
   isPrimitive,
   isString,
   logger,
@@ -88,15 +87,12 @@ function _installGlobalOnErrorHandler(): void {
         return;
       }
 
-      const event =
-        error === undefined && isString(msg)
-          ? _eventFromIncompleteOnError(msg, url, line, column)
-          : _enhanceEventWithInitialFrame(
-              eventFromUnknownInput(stackParser, error || msg, undefined, attachStacktrace, false),
-              url,
-              line,
-              column,
-            );
+      const event = _enhanceEventWithInitialFrame(
+        eventFromUnknownInput(stackParser, error || msg, undefined, attachStacktrace, false),
+        url,
+        line,
+        column,
+      );
 
       event.level = 'error';
 
@@ -170,38 +166,6 @@ function _eventFromRejectionWithPrimitive(reason: Primitive): Event {
       ],
     },
   };
-}
-
-/**
- * This function creates a stack from an old, error-less onerror handler.
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function _eventFromIncompleteOnError(msg: any, url: any, line: any, column: any): Event {
-  const ERROR_TYPES_RE =
-    /^(?:[Uu]ncaught (?:exception: )?)?(?:((?:Eval|Internal|Range|Reference|Syntax|Type|URI|)Error): )?(.*)$/i;
-
-  // If 'message' is ErrorEvent, get real message from inside
-  let message = isErrorEvent(msg) ? msg.message : msg;
-  let name = 'Error';
-
-  const groups = message.match(ERROR_TYPES_RE);
-  if (groups) {
-    name = groups[1];
-    message = groups[2];
-  }
-
-  const event = {
-    exception: {
-      values: [
-        {
-          type: name,
-          value: message,
-        },
-      ],
-    },
-  };
-
-  return _enhanceEventWithInitialFrame(event, url, line, column);
 }
 
 /** JSDoc */
